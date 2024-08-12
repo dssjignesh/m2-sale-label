@@ -1,0 +1,55 @@
+<?php
+
+/**
+ * Digit Software Solutions.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ *
+ * @category  Dss
+ * @package   Dss_DiscountLabel
+ * @author    Extension Team
+ * @copyright Copyright (c) 2024 Digit Software Solutions. ( https://digitsoftsol.com )
+ */
+
+/** @var $block \Magento\Checkout\Block\Item\Price\Renderer */
+
+$_item = $block->getItem();
+$originalPrice = $_item->getOriginalPrice() ?: $_item->getProduct()->getPrice();
+
+/** @var $blockObj Dss\DiscountLabel\Block\Item\Price\Renderer */
+$blockObj = $block->getLayout()->createBlock(\Dss\DiscountLabel\Block\Item\Price\Renderer::class);
+$helper = $blockObj->getHelper();
+$configHelper = $blockObj->getConfigHelper();
+?>
+
+<?php if (($originalPrice - $_item->getCalculationPrice()) > 0.9): ?>
+    <?php
+    $discountPercent = 100 - round(($_item->getCalculationPrice() * 100) / $originalPrice);
+    ?>
+    <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Discount')) ?>">
+        <span class="cart-price">
+            <span class="price">
+                <?= /* @noEscape */ $helper->formatPrice($originalPrice) ?>
+            </span>
+        </span>
+        <?php if ($configHelper->isActive()): ?>
+            <span class="dss-discount-label-wrap">
+                <?= $escaper->escapeHtml(
+                    str_replace(
+                        '{{discount_percent}}',
+                        $discountPercent,
+                        $configHelper->getConfig()->getCartDisplayFormat()
+                    )
+                ) ?>
+            </span>
+        <?php endif; ?>
+    <?php else: ?>
+        <span class="price-including-tax" data-label="<?= $escaper->escapeHtml(__('Excl. Tax')) ?>">
+            <span class="cart-price">
+                <?= /* @noEscape */ $helper->formatPrice($_item->getCalculationPrice()) ?>
+            </span>
+        </span>
+    <?php endif; ?>
