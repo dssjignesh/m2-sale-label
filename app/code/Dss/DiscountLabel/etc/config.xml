@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Digit Software Solutions.
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the EULA
+ * that is bundled with this package in the file LICENSE.txt.
+ *
+ * @category  Dss
+ * @package   Dss_DiscountLabel
+ * @author    Extension Team
+ * @copyright Copyright (c) 2024 Digit Software Solutions. ( https://digitsoftsol.com )
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <dss_discountlabel>
+            <general>
+                <enabled>1</enabled>
+                <debug>0</debug>
+            </general>
+            <discount>
+                <catalog_format><![CDATA[SAVE {{discount_percent}}%]]></catalog_format>
+                <cart_format><![CDATA[-{{discount_percent}}%]]></cart_format>
+            </discount>
+        </dss_discountlabel>
+    </default>
+</config>
